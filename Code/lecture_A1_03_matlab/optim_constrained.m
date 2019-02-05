@@ -1,7 +1,7 @@
 % Create some true signal
 N = 128;
 im = phantom(N);
-xtrue = im(end/2,:).';
+xtrue = im(end/2,:).'; %Take a slice halfway through and transpose;
 
 % Generate Fourier samples of this signal (dtrue = fftshift(fft(ifftshift(xtrue)));)
 A = dftmtx(N)/sqrt(N); % DFT matrix, normalized
