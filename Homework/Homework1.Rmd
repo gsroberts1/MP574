@@ -1,0 +1,68 @@
+---
+title: "Homework 1"
+author: "Grant Roberts"
+date: "February 15, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### \large{Problem 1}
+
+**A. Prove that the $\ell_1$ norm is a valid vector norm.** 
+
+\  
+
+
+
+\  
+
+**B. Prove that the $\ell_0$ 'metric' is not a valid vector norm.**
+
+*Note*: Remember that the $\ell_0$ 'metric' of a vector is defined as the number of non-zero entries in said vector.
+
+\  
+
+
+
+\  
+
+
+**C. Prove that any valid vector norm $\left\lVert \cdot\right\rVert$ is a convex function.** 
+
+*Note*: In other words, prove that the function $f : \mathbb{R}^N \rightarrow R$ defined as $f(\textbf{x}) \in \left\lVert \textbf{x}\right\rVert$, where $\left\lVert \textbf{x}\right\rVert$ calculates a given norm of $\textbf{x}$ (for instance, the $\ell_2$ aka Euclidean norm), is a convex function. This will be very important for optimization problems, as these problems (both the objective function as well as the inequality constraints) are often written as norms.
+
+\  
+
+
+
+\  
+
+**D. Prove that the set ${\left\lVert \textbf{x}\right\rVert}_2 \leq b$, for some $b > 0$, is a convex set within $\mathbb{R}^N$.** 
+
+\  
+
+
+
+\  
+
+**E. Plot or draw the following sets for a two-dimensional vector $\textbf{x} \in \mathbb{R}^2$** 
+
+i. ${\left\lVert \textbf{x}\right\rVert}_{\infty} < 1$ (where ${\left\lVert \textbf{x}\right\rVert}_{\infty} = \max_n{|x_n|}$
+ii. ${\left\lVert \textbf{x}\right\rVert}_2 < 1$
+iii. ${\left\lVert \textbf{x}\right\rVert}_1 < 1$
+iv. ${\left\lVert \textbf{x}\right\rVert}_{\frac{1}{2}} < 1$ (note that this one is not a norm, but we can define and plot the set just as well using the expression ${\left\lVert \textbf{x}\right\rVert}_{\frac{1}{2}} = (\sum_n{|x_n|^{\frac{1}{2}}})^2$).
+
+\ 
+
+\setlength{\parindent}{5ex} Feel free to do this analytically (eg: drawing by hand for easy shapes), or computationally. For each of these plots, graphically indicate whether the corresponding set is convex or not (ie: if the set is convex, the line segment that joins any two points within the set will be completely inside the set, whereas if the set is non-convex you will be able to find two points within the set such that the segment that joins them is not completely within the set).
+
+\  
+
+
+
+\  
