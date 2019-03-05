@@ -5,7 +5,7 @@ function [alpha] = goldenSearch(f,df,x,iters)
 a0 = 0; % lower bound on golden section search
 b0 = 1; % upper bound on golden section search
 rho = 0.382; % golden value
-tol = 0.0001; % tolerance
+tol = 0.001; % tolerance
 h = @(alpha) f(x-alpha*df(x)); %golden section search 
 
 for ii = 1:iters
