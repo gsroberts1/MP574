@@ -4,7 +4,7 @@ function [alpha] = goldenSearch(x_in,df,b,m,dims)
 a0 = 0; % lower bound on golden section search
 b0 = 1; % upper bound on golden section search
 rho = 0.382; % golden value
-iterations = 100;
+iterations = 30;
 
 h = @(alpha) f1(x_in-alpha*df,b,m,dims);
 
