@@ -1,4 +1,4 @@
-function matrix = rearrange(vector,dims)
-    matrix = reshape(vector,[dims dims]);
+function matrix = rearrange(vector,imageSize)
+    matrix = reshape(vector,imageSize);
 end
 
