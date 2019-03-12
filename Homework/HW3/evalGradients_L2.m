@@ -1,9 +1,9 @@
-function [f,g] = evalGradients_L2(x, imageSize, d, m, lambda, D, W)
+function [f,g] = evalGradients_L2(x, imageSize, b, m, lambda, D, W)
 %% Calculates the cost function and gradient of cost function at x
-% Fitting || Fx - d ||^2 + lambda ||Dx||_2^2 = || [F;sqrt(lambda)D]x - [d;0] ||_2^2
+% Fitting || Fx - b ||^2 + lambda ||Dx||_2^2 = || [F;sqrt(lambda)D]x - [b;0] ||_2^2
 %   x = input image estimation
 %   imageSize = array of image dimensions ([320 320])
-%   d = acquired data vector (Nx1)
+%   b = acquired data vector (Nx1)
 %   m = vectorized mask (Nx1)
 %   lambda = regularization parameter (scalar)
 %   D = finite differences matrix (NxN)
@@ -13,17 +13,17 @@ function [f,g] = evalGradients_L2(x, imageSize, d, m, lambda, D, W)
 k = fft2c(reshape(x,imageSize)); % get kSpace (Fx)
 km = k(m); % mask kSpace (MFx)
 % objective function = ||MFx-d||_2^2 + lambda||Dx||_2^2
-f = norm(km(:)-d(:))^2 + lambda*norm(W(:).*(D*x(:)))^2; 
+f = norm(km(:)-b(:))^2 + lambda*norm(W(:).*(D*x(:)))^2; 
 
 if nargout > 1
     kmm = k(:).*m; % zero-fill and mask kSpace (M'MFx)
     fhfx = ifft2c(reshape(kmm,imageSize)); % get image space (F'M'MFx)
 
-    mhd = zeros(imageSize); % initialize undersampled d vector
-    mhd(m) = d; % zero-fill d (M'd)
-    Fhd = ifft2c(reshape(mhd,imageSize)); % fft masked d (F'M'd)
-    % closed form of gradient of obj. function = (2F'M'MFx)-(2F'M'd)-...
-    g = 2*fhfx(:) + 2*lambda*D'*(conj(W(:)).*W(:).*(D*x(:))) - 2*Fhd(:);     
+    mhb = zeros(imageSize); % initialize undersampled b vector
+    mhb(m) = b; % zero-fill b (M'b)
+    Fhb = ifft2c(reshape(mhb,imageSize)); % fft masked d (F'M'b)
+    % closed form of gradient of obj. function = (F'M'MFx)-(F'M'b)-...
+    g = fhfx(:) + lambda*D'*(conj(W(:)).*W(:).*(D*x(:))) - Fhb(:);     
 end
 
 end

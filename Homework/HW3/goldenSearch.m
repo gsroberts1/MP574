@@ -4,7 +4,7 @@ function [alpha] = goldenSearch(x,g,imageSize,b,m,lambda,D,W)
 a0 = 0; % lower bound on golden section search
 b0 = 1; % upper bound on golden section search
 rho = 0.382; % golden value
-iterations = 200;
+iterations = 60;
 
 for ii = 1:iterations
     a1 = a0 + rho*(b0-a0);
