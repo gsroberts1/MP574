@@ -1,12 +1,5 @@
 function [f,g,g1,g2] = evalGradients_L1(x, imageSize, d, mask, lambda, D,mu)
-%% evalGradients_L1: evaluates f(x) and grad(x) given x.
 % Fitting || Fx - d ||_2^2 + lambda ||Dx||_1
-%   imageSize: matrix of image dimensions
-%   d: data vector
-%   mask: vectorized mask
-%   lambda: regularization parameter
-%   D: finite differences matrix
-%   mu: 
 
 fx1 = fftshift(fft2(ifftshift(reshape(x,imageSize))));
 fx = fx1(mask(:));
