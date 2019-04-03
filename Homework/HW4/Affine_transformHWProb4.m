@@ -1,16 +1,16 @@
 % Affine Transform Script
 I = fixed; 
-%I =[0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 1 1 0 0; 0 0 1 1 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0] % Define the image
 figure;subplot(2,2,1);imagesc(I); axis('image'); colormap('gray');title('Fixed') %Display the image
 colorbar;
 
-[xdim,ydim] = size(I)
-theta = 0;
-phi = 35;
-delx = xdim/2;
-dely = ydim/2;
-mdelx = 10;
-mdely = 10;
+[xdim,ydim] = size(I);
+theta = 15; %rotation angle
+phi = 0; %shear angle
+delx = xdim/2; %translation in x
+dely = ydim/2; %translation in y
+mdelx = 0; %initial translation in x
+mdely = 0; %initial translation in y
+
 I_affine = zeros(xdim,ydim);
 % Define the Transformation Matrix
 T = [1 0 mdelx;0 1 mdely;0 0 1] % Translation 0
@@ -18,8 +18,8 @@ T2 = [1 0 delx; 0 1 dely; 0 0 1] % Translation 1
 T1 = [1 0 -delx; 0 1 -dely; 0 0 1] % Translation 2
 R = [cos(theta/180*pi) -sin(theta/180*pi) 0; sin(theta/180*pi) cos(theta/180*pi) 0; 0 0 1] % Rotation
 S = [1 0 0;0 1 0;0 0 1] % Scaling
-H_x = [1 tan(phi/180*pi) 0;0 1 0;0 0 1] % Shear in x only %tan(20/180*pi)
-T_affine = S*H_x*R*T % Calculate the Affine Transformation Matrix
+H_x = [1 tan(phi/180*pi) 0;0 1 0;0 0 1] % Shear in x only
+T_affine = S*H_x*T2*R*T1 % Calculate the Affine Transformation Matrix
 
 % Define indices of Coordinates to Transform
 x = 1:length(I(:,1));
@@ -33,19 +33,19 @@ Index(:,:,3) = Z;
 Index; % The columns of this 3D matrix are the coordinates to transform
 
 % Perform Affine Tranformation with Nearest Neighbor Interpolation
-for j = 1:length(y),
-    for i = 1:length(x),
+for j = 1:length(y)
+    for i = 1:length(x)
         temp = Index(i,j,:); % temp is the column representing the coordinates 
         temp = squeeze(temp); % collapse to a 1X3 matrix
         Test = T_affine*temp; % apply the tranformation to the coordinates
-        if round(Test(2))>0 & round(Test(1))>0 & round(Test(2))<xdim & round(Test(1))<xdim
-            I_affine(round(Test(2)),round(Test(1))) = I(temp(2),temp(1));end;
-        if round(Test(2))>0 & round(Test(1))>0 & round(Test(2))<xdim & round(Test(1))<xdim
-            I_affine(round(Test(2))+1,round(Test(1))) = I(temp(2),temp(1));end;
-        if round(Test(2))>0 & round(Test(1))>0 & round(Test(2))<xdim & round(Test(1))<xdim
-            I_affine(round(Test(2))+1,round(Test(1))+1) = I(temp(2),temp(1));end;
-        if round(Test(2))>0 & round(Test(1))>0 & round(Test(2))<xdim & round(Test(1))<xdim
-            I_affine(round(Test(2)),round(Test(1))+1) = I(temp(2),temp(1));end;
+        if round(Test(2))>0 && round(Test(1))>0 && round(Test(2))<xdim && round(Test(1))<xdim
+            I_affine(round(Test(2)),round(Test(1))) = I(temp(2),temp(1));end
+        if round(Test(2))>0 && round(Test(1))>0 && round(Test(2))<xdim && round(Test(1))<xdim
+            I_affine(round(Test(2))+1,round(Test(1))) = I(temp(2),temp(1));end
+        if round(Test(2))>0 && round(Test(1))>0 && round(Test(2))<xdim && round(Test(1))<xdim
+            I_affine(round(Test(2))+1,round(Test(1))+1) = I(temp(2),temp(1));end
+        if round(Test(2))>0 && round(Test(1))>0 && round(Test(2))<xdim && round(Test(1))<xdim
+            I_affine(round(Test(2)),round(Test(1))+1) = I(temp(2),temp(1));end
         % round() performs the nearest neighbor interpolation
     end
 end
@@ -56,8 +56,8 @@ colorbar;
 
 I_affine = zeros(xdim,ydim);
 % Perform Affine Tranformation with Bi-linear Interpolation
-for j = 1:length(y),
-    for i = 1:length(x),
+for j = 1:length(y)
+    for i = 1:length(x)
         temp = Index(i,j,:); % temp is the column representing the coordinates 
         temp = squeeze(temp); % collapse to a 1 X 3 matrix
         Test = T_affine*temp; % apply the tranformation to the coordinates
@@ -84,5 +84,7 @@ end
 % Display the transformed matrix
 subplot(2,2,3);imagesc(I_affine); axis('image'); colormap('gray'); title('Transformed Image: Bilinear Interpolation') %Display the image
 colorbar;
-%I_affine(1:6,1:6) = I_affine(1:6,1:6) + I;
-%subplot(2,2,4);imagesc(I_affine); axis('image'); title('Sum Image') %Display the image
+tform = affine2d(T_affine');
+image_tform = imwarp(I,tform);
+%image_tform = image_tform(30:(end-29),30:(end-29));
+subplot(2,2,4);imagesc(image_tform); axis('image'); title('Using built-in Matlab interp') %Display the image

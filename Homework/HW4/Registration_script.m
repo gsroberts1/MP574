@@ -8,7 +8,9 @@ I = fixed;
 figure, imshow(I);
 % Perform rigid transforms
 J = imresize(I,0.6,'bilinear'); % Try varying the resize factor.
-K = imrotate(J,30,'bilinear'); % Try varying the scale factor.
+load HW4-Image-Moving.mat
+K = I2;
+%K = imrotate(J,15,'bilinear'); % Try varying the scale factor.
 figure, imshow(K,[]);
 
 %Register using rigid (scale, rotation, translation) inverse transform matrix based on control points
