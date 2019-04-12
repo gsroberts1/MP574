@@ -1,0 +1,20 @@
+fid = fopen('brain.bin', 'r');
+brain_bin = fread(fid, 128*128*36, 'integer*4');
+
+max(max(brain_bin))
+
+ans = 1296
+
+% Loaded in as a 1-dimensional array
+
+whos
+  Name            Size                    Bytes  Class
+
+  brain_bin  589824x1                   4718592  double array
+  fid             1x1                         8  double array
+
+Grand total is 589825 elements using 4718600 bytes
+
+brain = reshape(brain_bin, [128 128 1 36]); 
+
+figure; montage(brain,[1 1000]) % See Figure 2 below
