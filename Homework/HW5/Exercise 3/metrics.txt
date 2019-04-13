@@ -1,0 +1,4 @@
+Result = 
+ Iterations    = 5000
+ Metric value  = 0.703242
+ Numb. Samples = 400

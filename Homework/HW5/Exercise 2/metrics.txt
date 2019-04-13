@@ -1,0 +1,5 @@
+Result = 
+ Translation X = 8.97347
+ Translation Y = -14.5047
+ Iterations    = 23
+ Metric value  = 19.7021
