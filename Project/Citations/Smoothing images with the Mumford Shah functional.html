@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)https://jacobgil.github.io/computervision/mumford-shah -->
+<html lang="en" itemscope="" itemtype="http://schema.org/Article" class="gr__jacobgil_github_io"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- Non social metatags -->
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="theme-color" content="#157878">
+
+    
+
+    <title>Smoothing images with the Mumford Shah functional </title>
+
+    
+      <!-- Update your html tag to include the itemscope and itemtype attributes. -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Place this data between the <head> tags of your website -->
+
+<meta name="description" content="Try out my python implementation for minimizing the Mumford Shah functional.">
+
+
+
+
+
+<!-- Schema.org markup for Google+ -->
+<meta itemprop="name" content="Smoothing images with the Mumford Shah functional ">
+<meta itemprop="description" content="Try out my python implementation for minimizing the Mumford Shah functional.">
+
+  <meta itemprop="image" content="http://jacobgil.github.io">
+
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+<meta name="twitter:title" content="Smoothing images with the Mumford Shah functional ">
+<meta name="twitter:description" content="Try out my python implementation for minimizing the Mumford Shah functional.">
+
+
+  <meta name="twitter:creator" content="@jacobgildenblat">
+
+
+<!-- Twitter summary card with large image must be at least 280x150px -->
+
+  <meta name="twitter:image:src" content="http://jacobgil.github.io">
+  <meta property="twitter:image" content="http://jacobgil.github.io">
+
+<meta property="twitter:url" content="http://jacobgil.github.io/computervision/mumford-shah">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="Smoothing images with the Mumford Shah functional ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://jacobgil.github.io/computervision/mumford-shah">
+
+  <meta property="og:image" content="http://jacobgil.github.io">
+
+<meta property="og:description" content="Try out my python implementation for minimizing the Mumford Shah functional.">
+<meta property="og:site_name" content="Jacob&#39;s Computer Vision and Machine Learning blog">
+
+  <meta property="article:published_time" content="2015-04-26T20:10:33+00:00">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+    
+
+    <link rel="canonical" href="http://jacobgil.github.io/computervision/mumford-shah">
+
+    
+
+    <link rel="shortcut icon" href="http://jacobgil.github.io/favicon.ico">
+    <meta name="robots" content="noarchive">
+
+    <!-- <link rel="alternate" media="only screen and (max-width: 640px)" href="">
+    <link rel="alternate" media="handheld" href=""> -->
+
+
+    <link href="./Smoothing images with the Mumford Shah functional_files/css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./Smoothing images with the Mumford Shah functional_files/style.css">
+  <script async="" src="./Smoothing images with the Mumford Shah functional_files/analytics.js.download"></script><script type="text/javascript" async="" src="./Smoothing images with the Mumford Shah functional_files/embed.js.download"></script><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.694ea7181ea49f1ce306dfc00c532f53.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.2b6bb3725200b8d992a8cb9c288952d3.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.cae215edf06f7671558266ac99f46d08.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"><script src="./Smoothing images with the Mumford Shah functional_files/alfalfa_min.d078e4f2a4721192a99e02601a767617.js.download" async="" charset="UTF-8"></script></head>
+  <body data-gr-c-s-loaded="true">
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+
+    
+      <a class="site-title" href="https://jacobgil.github.io/">Jacob's Computer Vision and Machine Learning blog</a>
+    
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+              
+              
+            
+          
+            
+            
+              
+                <a class="page-link" href="https://jacobgil.github.io/about/">About me</a>
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    
+    
+    
+
+    <section class="page-header">
+      <h1 class="project-name">Smoothing images with the Mumford Shah functional </h1>
+      <h2 class="project-tagline"></h2>
+      
+      <!-- Post tagline -->
+<!--       
+        <h2 class="project-date">
+        <time datetime="2015-04-26T20:10:33+00:00" itemprop="datePublished">
+          
+          Apr 26, 2015
+        </time>
+        
+        
+        </h2>
+      
+ -->      <!-- End: Post tagline -->
+    </section>
+
+    <section class="main-content">
+
+      <article itemscope="" itemtype="http://schema.org/BlogPosting">
+
+  <div itemprop="articleBody">
+    <p><a href="https://github.com/jacobgil/Ambrosio-Tortorelli-Minimizer">Try out my python implementation</a> for minimizing the Mumford Shah functional.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python">    <span class="kn">import</span> <span class="nn">cv2</span>
+    <span class="kn">from</span> <span class="nn">AmbrosioTortorelliMinimizer</span> <span class="kn">import</span> <span class="o">*</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"image.jpg"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">AmbrosioTortorelliMinimizer</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">img</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">minimize</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="./Smoothing images with the Mumford Shah functional_files/kitty.jpg" alt="enter image description here"><img src="./Smoothing images with the Mumford Shah functional_files/kitty1000_0.01_0.01_result.jpg" alt="enter image description here"><br>
+<img src="./Smoothing images with the Mumford Shah functional_files/trees.jpg" alt="enter image description here"><img src="./Smoothing images with the Mumford Shah functional_files/trees1000_0.01_0.001_result.jpg" alt="enter image description here"><br>
+<img src="./Smoothing images with the Mumford Shah functional_files/star.jpg" alt="Result of minimizing the Ambrosio-Tortorelli functional"><img src="./Smoothing images with the Mumford Shah functional_files/star100_0.01_0.01_result.jpg" alt="Result of minimizing the Ambrosio-Tortorelli functional"></p>
+
+<p>The Mumford Shah functional, one of the most cited models in Computer Vision,<br>
+is designed to smooth homogeneous regions in an image, while enhancing edges.<br>
+You can minimize it to get edge preserving smoothing, or a segmentation of the image, depending on the parameters you choose.</p>
+
+<p><img src="./Smoothing images with the Mumford Shah functional_files/b41a124f6e46c09a9061b44c5d63ffdf.png" alt="enter image description here"></p>
+
+<p>The functional tries to enforce some conditions on the target image J:<br>
+1. The target image J should be similar to the input image I.<br>
+2. The target image J should be smooth, except at a set of edges B.<br>
+3. There should be few edges.</p>
+
+<p>That’s a hard optimization problem.<br>
+Luckily, Ambrosio and Tortorelli showed that the functional can be represented in terms of another functional, where the edge set B is modeled by multiplication with a continuous function that represents the edges, and converges to the original mumford-shah functional when ɛ approaches 0.</p>
+
+<p><img src="./Smoothing images with the Mumford Shah functional_files/0481935f89095b9a56eb2493bd973399.png" alt="enter image description here"></p>
+
+<p>z is ~0 for edges, and ~1 for smooth pixels.<br>
+The optimization problem is now to minimize:</p>
+
+<p><img src="./Smoothing images with the Mumford Shah functional_files/bcfdd57040ea4c09cd43f13cfe982072.png" alt="enter image description here"></p>
+
+<p>Using functional calculus you can take derivatives of that, and obtain a linear system of equations for solving:<br>
+1. The edge set Z.<br>
+2. The image J.<br>
+Both depend on one another, so usually an alternation scheme is used:<br>
+Solve for the edge set Z while fixing J, and then solve for J while fixing Z.<br>
+To derive the equations I followed <a href="http://www.eng.tau.ac.il/~nk/TRs/LeahTIP2006.pdf">http://www.eng.tau.ac.il/~nk/TRs/LeahTIP2006.pdf</a><br>
+That paper also shows you can use the same functional as a regularizer for reconstructing sharp images out of blurred ones if you have the blurring kernel, or if you parameterize the kernel as a Gaussian.</p>
+
+<p>There are a few practical problems with all this, though:</p>
+
+<ol>
+  <li>Solving such a huge set of equations (one equation for every pixel) is slow.<br>
+I provided the conjugate gradient solver a linear operator, instead of creating and storing a huge matrix.<br>
+I wonder if using a pre-conditioner would do any good for speed of convergence.<br>
+Also there should probably be a unified calculation for RGB images, instead of smoothing each channel.</li>
+  <li>You have to choose a good value of ɛ.</li>
+</ol>
+
+<p>In my implementation for the purpose of speed I set the default parameters to be few iterations and a high numerical tolerance. Results look good for even one AM iteration.<br>
+It’s pretty straight forward to implement on a GPU, since single pixel calculations are independent of one another.<br>
+On my machine the unconcurrent python implementation run time for 640x480 color images was about 0.6 seconds, so I guess a GPU implementation would speed it up a lot.<br>
+There is lots of ongoing work on phrasing other minimization problems to solve the same thing, and it’s getting close to real time.<br>
+<a href="https://vision.in.tum.de/_media/.../bib/strekalovskiy_cremers_eccv14.pdf">In this paper</a> (<a href="https://github.com/tum-vision/fastms">github repo</a>) they phrased a similar functional, that’s independent of ɛ or the edge set (they model the edge set in terms of the image gradient), and boast 20 fps performance for color images.<br>
+They did use a GPU implementation, and a strong GPU to achieve that,<br>
+so I wonder what would be the performance of a GPU implementation for the Ambrosio-Tortorelli minimization.</p>
+
+  </div>
+
+  <div id="disqus_thread"><iframe id="dsq-app895" name="dsq-app895" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Smoothing images with the Mumford Shah functional_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 661px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jacobgil'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+
+
+      <footer class="site-footer">
+        <!-- SVG icons from https://iconmonstr.com -->
+
+        <!-- Github icon -->
+        <span class="my-span-icon">
+          <a href="https://github.com/jacobgil" aria-label="jacobgil&#39;s GitHub" title="jacobgil&#39;s GitHub">
+            <svg class="my-svg-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+          </a>
+        </span>
+
+        <!-- Twitter icon -->
+        <span class="my-span-icon">
+          <a href="https://twitter.com/jacobgildenblat" aria-label="jacobgil&#39;s Twitter" title="jacobgil&#39;s Twitter">
+            <svg class="my-svg-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z"></path></svg>
+          </a>
+        </span>
+
+        <!-- RSS icon -->
+        
+        <!-- Contact icon -->
+        
+        
+          <span class="my-span-icon">
+            <a href="https://jacobgil.github.io/about/" aria-label="Contact" title="Contact jacobgil">
+              <svg class="my-svg-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 .02c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.99 6.98l-6.99 5.666-6.991-5.666h13.981zm.01 10h-14v-8.505l7 5.673 7-5.672v8.504z"></path></svg>
+            </a>
+          </span>
+        
+
+      </footer>
+    </section>
+
+    
+      <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-88816088-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  
+
+<iframe style="display: none;" src="./Smoothing images with the Mumford Shah functional_files/saved_resource(1).html"></iframe></body><div><div class="gr_-editor gr-iframe-first-load" style="display: none;"><div class="gr_-editor_back"></div><iframe class="gr_-ifr gr-_dialog-content" src="./Smoothing images with the Mumford Shah functional_files/saved_resource(2).html"></iframe></div></div><grammarly-card><div></div></grammarly-card><span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span></html>
